@@ -1,7 +1,7 @@
-import react from "react";
+import React from "react";
 import SearchPresenter from "./SearchPresenter";
 
-export class extends React.Component {
+export default class extends React.Component {
     state = {
         movieResults: null,
         tvResults: null,

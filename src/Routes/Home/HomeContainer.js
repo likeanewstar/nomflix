@@ -1,5 +1,6 @@
-import react from "react";
+import React from "react";
 import HomePresenter from "./HomePresenter";
+import { moviesApi } from "api";
 
 export default class extends React.Component{
     state = {
@@ -8,10 +9,33 @@ export default class extends React.Component{
         popular: null,
         error: null,
         loading: true
-    };
+    }
+
+    async componentDidMount () {
+      try { 
+        const {data: {results: nowPlaying}} = await moviesApi.nowPlaying();
+        const {data: {results: upcoming}} = await moviesApi.upcoming();
+        const {data: {results: popular}} = await moviesApi.popular();
+        //throw Error(); // 강제로 에러 호출
+        this.setState({
+          nowPlaying,
+          upcoming,
+          popular
+        })
+      } catch { // error 발생 시
+        this.setState({
+          error: "Can't find movies information."
+        })
+      } finally { // try, catch와 상관 없이 따라 올 결과
+        this.setState({
+          loading: false
+        })
+      }
+    }
 
     render() {
       const { nowPlaying, upcoming, popular, error, loading } = this.state;
+      console.log(this.state);
       return <HomePresenter nowPlaying={nowPlaying} upcoming={upcoming} popular={popular} error={error} loading={loading} />
     }
 }
