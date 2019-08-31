@@ -8,16 +8,34 @@ const api = axios.create({
     }
 });
 
-; // tv 앞에 '/'를 넣으면 절대경로가 되기 때문에 넣으면 안 됨
-
 export const tvApi = {
     nowPlaying: () => api.get('movie/now_playing'),
     upcoming: () => api.get('movie/upcoming'),
-    popular: () => api.get("movie/popular")
+    popular: () => api.get("movie/popular"),
+    movieDetail: id => api.get(`movie/${id}`,
+        params: {
+            append_to_respond: "videos"
+        }
+    ),
+    search: term => api.get("search/movie", 
+        params: {
+            query: encodeURIComponent(term)
+        }
+    )
 }
 
 export const moviesApi = {
     topRated: () => api.get('tv/top_rated'),
     popular: () => api.get("tv/popular"),
-    airingToday: () => api.get("tv/airing_today")
+    airingToday: () => api.get("tv/airing_today"),
+    showDetail: id => api.get(`tv/${id}`,
+        params: {
+            append_to_respond: "videos"
+        }
+    ),
+    search: term => api.get("search/tv", 
+        params: {
+            query: encodeURIComponent(term)
+        }
+    )
 }
